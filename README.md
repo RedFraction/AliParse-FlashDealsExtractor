@@ -1,6 +1,8 @@
 # FlashDealsExtractor
 Extract Ali flash deals to csv
 
+#### This project published with GNU GPLv3 License
+
 ## Results with 20 item per request on AMD Ryzen 3550H / WIN 10 Pro / AdoptJDK 1.8 :
 	100  items = AVG ( ~ 2650 ms  );
 	200  items = AVG ( ~ 4250 ms  );
