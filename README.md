@@ -13,3 +13,5 @@ Extract Ali flash deals to csv
 | --offersLimit=%        | Set how much offers need to load, by default 100 |
 | --per-request=%        | Set how much offers get per request ( don't use more than 20-30 - ali wouldn't get too much items per request ), by default 20 |
 | --wo-header            | Do not draw table header, by default header will be drawn |
+
+### !!! To build project you need Jackson library !!!
