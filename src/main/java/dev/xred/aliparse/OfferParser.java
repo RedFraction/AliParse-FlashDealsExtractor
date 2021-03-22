@@ -1,6 +1,7 @@
 package dev.xred.aliparse;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class OfferParser {
@@ -13,12 +14,12 @@ public class OfferParser {
 		{
 			BufferedWriter bw = new BufferedWriter(
 					new OutputStreamWriter(
-							new FileOutputStream("offers.csv"), "UTF-8"
+							new FileOutputStream("offers.csv"), StandardCharsets.UTF_8
 					)
 			);
 
 			if ( drawHeader ) {
-				StringBuffer l = new StringBuffer();
+				StringBuilder l = new StringBuilder();
 				l.append("Product id");
 				l.append(SEPARATOR);
 				l.append("Seller id");
@@ -66,14 +67,13 @@ public class OfferParser {
 				l.append("Item eval total num");
 				l.append(SEPARATOR);
 				l.append("GMT Create");
-				l.append(SEPARATOR);
 
 				bw.write(l.toString());
 				bw.newLine();
 			}
 
 			for (Offer o : offers) {
-				StringBuffer ln = new StringBuffer();
+				StringBuilder ln = new StringBuilder();
 				ln.append(o.getProductId());
 				ln.append(SEPARATOR);
 				ln.append(o.getSellerId());
@@ -121,7 +121,6 @@ public class OfferParser {
 				ln.append(o.getItemEvalTotalNum());
 				ln.append(SEPARATOR);
 				ln.append(o.getGmtCreate());
-				ln.append(SEPARATOR);
 
 				bw.write(ln.toString());
 				bw.newLine();

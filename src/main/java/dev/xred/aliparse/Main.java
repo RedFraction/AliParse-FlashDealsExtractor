@@ -9,13 +9,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /***
-         Results with 20 item per request:
+        /*
+            Results with 20 item per request:
             100  items = AVG ( ~ 2650 ms  );
             200  items = AVG ( ~ 4250 ms  );
             500  items = AVG ( ~ 9050 ms  );
             1000 items = AVG ( ~ 16800 ms );
-         ***/
+         */
 
         // Set default sizes
         int limit = 100;

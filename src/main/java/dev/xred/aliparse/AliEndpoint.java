@@ -18,84 +18,84 @@ public class AliEndpoint {
 
 	// Params
 	private long widget_id = 5547572;
-	private int limit = 10;
+	private String post_id = "732db1c7-edf1-46d0-af03-64f78613fa78";
+	private int limit;
 	private int offset = 0;
 
 	// Constructors
 	public AliEndpoint(int limit){
 		this.limit = limit;
 	}
+
 	public AliEndpoint(int limit, int offset){
 		this.limit = limit;
 		this.offset = offset;
 	}
-	public AliEndpoint(long widget_id,int limit, int offset){
+
+	public AliEndpoint(int limit, int offset, long widget_id, String post_id){
 		this.widget_id = widget_id;
 		this.limit = limit;
 		this.offset = offset;
+		this.post_id = post_id;
 	}
 
-	/***
-	 * Generate request url
-	 * @return String url to new
+	/**
+	 * Generate new parametrized request url
+	 * @return String - new parametrized url
 	 */
 	private String getUrl(){
 		return
 			new StringBuilder(API_ENDPOINT)
-					.append("?widget_id=")
-					.append(widget_id)
-					.append("&limit=")
-					.append(limit)
-					.append("&offset=")
-					.append(offset)
-					.append("&postback=732db1c7-edf1-46d0-af03-64f78613fa78")
-						.toString();
+				.append("?widget_id=").append(widget_id)
+				.append("&limit=").append(limit)
+				.append("&offset=").append(offset)
+				.append("&postback=").append(post_id)
+					.toString();
 	}
 
-	public List<Offer> getNext() {
+	public List<Offer> getNext() throws NullPointerException{
 
-		StringBuffer response = new StringBuffer();
-		BufferedReader in;
-		HttpURLConnection connection;
-
-		ObjectMapper om = new ObjectMapper();
-
-		JsonNode root = null;
 		List<Offer> offers = null;
 
 		try {
-
-			URL obj = new URL(getUrl());
-			connection = (HttpURLConnection) obj.openConnection();
+			// Open http connection
+			HttpURLConnection connection = (HttpURLConnection) new URL(getUrl()).openConnection();
 			connection.setRequestMethod("GET");
 
-			in = new BufferedReader( new InputStreamReader( connection.getInputStream() ) );
+			// Read response
+			BufferedReader in = new BufferedReader( new InputStreamReader( connection.getInputStream() ) );
+			StringBuilder response = new StringBuilder();
 			String inputLine;
-
-			while ((inputLine = in.readLine()) != null) {
+			while ( ( inputLine = in.readLine() ) != null) {
 				response.append(inputLine);
 			}
+
+			// Close http connection
 			in.close();
 
-			root = om.readTree(response.toString());
+			// Parse results to POJO list
+			ObjectMapper om = new ObjectMapper();
+			JsonNode root = om.readTree(response.toString());
 			offers = om.readValue(root.get("results").toString(), new TypeReference<List<Offer>>(){} );
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		offset += offers.size();
+		if (offers != null) offset += offers.size();
+		else throw new NullPointerException("List of offers not defined, check internet connection");
 
 		return offers;
 	}
 
-	/***
+	/**
 	 * Reset offset counter
 	 */
 	public void reset(){
 		offset = 0;
 	}
 
-	/*** Getters / Setters ***/
+	/** Getters / Setters **/
 	public long getWidgetId() {
 		return widget_id;
 	}
